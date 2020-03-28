@@ -39,14 +39,11 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="339dp"
-        android:layout_marginLeft="339dp"
-        android:layout_marginTop="659dp"
+        android:layout_width="56dp"
+        android:layout_height="69dp"
         android:clickable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_upload" />
+        app:srcCompat="@android:drawable/ic_menu_upload"
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="611dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

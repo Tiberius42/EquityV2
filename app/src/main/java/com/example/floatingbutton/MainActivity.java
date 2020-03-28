@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 //import androidx.appcompat.widget.FloatingActionButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                Intent startIntent = new Intent(getApplicationContext(), PingCreationActivity.class);
+                startActivity(startIntent);
             }
         });
     }

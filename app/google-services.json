@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "127344541956",
+    "firebase_url": "https://lahacks2020-5480b.firebaseio.com",
+    "project_id": "lahacks2020-5480b",
+    "storage_bucket": "lahacks2020-5480b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127344541956:android:69c11fad017ffd8b0b9051",
+        "android_client_info": {
+          "package_name": "com.example.floatingbutton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127344541956-l828laislppg2pcjfj0a0munebhuve36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs-j3iCfUmR331-9QtKsETSWht1iXOmrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127344541956-l828laislppg2pcjfj0a0munebhuve36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127344541956:android:9f88961ead7d73680b9051",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127344541956-l828laislppg2pcjfj0a0munebhuve36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs-j3iCfUmR331-9QtKsETSWht1iXOmrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127344541956-l828laislppg2pcjfj0a0munebhuve36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

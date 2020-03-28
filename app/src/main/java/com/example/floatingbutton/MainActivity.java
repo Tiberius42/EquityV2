@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_LOCATION = "location";
     // Used for selecting the current place.
     private static final int M_MAX_ENTRIES = 5;
+
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
@@ -66,8 +67,10 @@ public class MainActivity extends AppCompatActivity
     private CameraPosition mCameraPosition;
     // The entry point to the Places API.
     private PlacesClient mPlacesClient;
+
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
     private boolean mLocationPermissionGranted;
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
@@ -140,9 +143,10 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-
-                Intent startIntent = new Intent(getApplicationContext(), PingCreationActivity.class);
-                startActivity(startIntent);
+                if (mLocationPermissionGranted) {
+                    Intent startIntent = new Intent(getApplicationContext(), PingCreationActivity.class);
+                    startActivity(startIntent);
+                }
             }
         });
 

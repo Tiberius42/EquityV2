@@ -37,6 +37,10 @@ P!ng is an Android app written in Java with Android Studio. It makes use of Goog
 
 As a location-oriented social media app, Google Maps provides the foundation of Ping’s functionality. We are able to access the geographic coordinates of users with Google’s location services, from which the users can then ping specific positions on a global map based on their current location. Our pings update on the map immediately as you send them, so users can traverse an entire feed of others’ pings just by viewing different areas on the map. The functionality offered by Google Maps ensures that our users can both post pings, as well as view pings by others with particular locations in mind. The content of our platform is thus well-suited to supporting a variety of location-based services.
 
+### Firebase
+
+For this application, we needed some way to store all the pings that users will make. We used firebase to store all our data. The two areas where we used it primarily was fetching all our markers to place them into the map
+
 ### Map Markers
 
 In order to distinguish between pings with different emotions, we wanted to have custom map markers. Each map marker design is stored as SVG paths in an XML file and then converted to a bitmap image when the app loads. Everytime a ping is logged, it stores the location, along with the emotion that was tagged with it. This allows us to place the appropriate marker at the correct location. Additionally, new markers start at a lower opacity and become more opaque as they receive more likes. This means that frequently liked messages stand out.

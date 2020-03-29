@@ -35,6 +35,7 @@
 <!--    <include layout="@layout/content_main" />-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -65,8 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent" />
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.example.floatingbutton.MainActivity">
@@ -75,7 +75,7 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
+                android:layout_gravity="bottom|start"
                 android:layout_margin="16sp"
                 app:srcCompat="@android:drawable/ic_dialog_map" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

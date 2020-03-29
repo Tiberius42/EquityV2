@@ -3,21 +3,21 @@
     "featureType": "all",
     "elementType": "geometry",
     "stylers": [
-      { "color": "#337182" }
+      { "color": "#6FA3B0" }
     ]
   },
   {
     "featureType": "water",
     "elementType": "all",
     "stylers": [
-      { "color": "#1D1A5C" }
+      { "color": "#0C16A8" }
     ]
   },
   {
     "featureType": "poi",
     "elementType": "geometry",
     "stylers": [
-      { "color": "#93B4BC" }
+      { "color": "#A2B8BD" }
     ]
   },
   {
@@ -31,7 +31,7 @@
     "featureType": "road",
     "elementType": "geometry",
     "stylers": [
-      { "color": "#FFFFBF",
+      { "color": "#E0E092",
         "visibility": "simplified"
       }
     ]

@@ -3,7 +3,11 @@ package com.example.floatingbutton;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -52,6 +58,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -90,6 +97,9 @@ public class MainActivity extends AppCompatActivity
     private List[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
 
+    private HashMap<String, Bitmap> markers;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +169,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //adds markers
+        // Get marker Bitmaps.
+        String[] tags = {new String(Character.toChars(0x2764)), "HAHA", "OMG", new String(Character.toChars(0x1F628)), new String(Character.toChars(0x2753))};
+        int[] markersSvg = {R.drawable.heart, R.drawable.haha, R.drawable.exmark, R.drawable.yikes, R.drawable.question};
 
+        markers = new HashMap<>();
+        for (int i = 0; i < tags.length; i++) {
+            markers.put(tags[i], svgToBitmap(markersSvg[i]));
+        }
     }
 
     /**
@@ -255,7 +271,7 @@ public class MainActivity extends AppCompatActivity
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //String message = "";
-        DocumentReference docRef = db.collection("pings").document("SMQLafO3pltEzGFwZ0vc");
+        final DocumentReference docRef = db.collection("pings").document("SMQLafO3pltEzGFwZ0vc");
         //map.addMarker(new MarkerOptions().position(new LatLng(34.00849, -118.498)).title("heyhey"));
 
         db.collection("pings")
@@ -270,7 +286,12 @@ public class MainActivity extends AppCompatActivity
                                 double lat = geoPoint.getLatitude();
                                 double lng = geoPoint.getLongitude ();
                                 LatLng latLng = new LatLng(lat, lng);
-                                mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                                if (markers.containsKey(document.get("tag"))) {
+                                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(markers.get(document.get("tag"))))
+                                            .position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                                } else {
+                                    mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                                }
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -500,6 +521,16 @@ public class MainActivity extends AppCompatActivity
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Bitmap svgToBitmap(int id) {
+        Drawable d = getDrawable(id);
+        Bitmap bmp = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+        d.setBounds(0, 0, c.getWidth(), c.getHeight());
+        d.draw(c);
+        return bmp;
     }
 
 }

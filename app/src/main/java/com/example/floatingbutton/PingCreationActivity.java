@@ -1,8 +1,10 @@
 package com.example.floatingbutton;
 
+import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -42,6 +44,9 @@ public class PingCreationActivity extends AppCompatActivity {
 
     private Location mLastKnownLocation;
 
+    private TextView message;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +91,26 @@ public class PingCreationActivity extends AppCompatActivity {
 
 
 
-        TextView message = findViewById(R.id.messageBox);
+        message = findViewById(R.id.messageBox);
+
+        message.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(@SuppressLint("ClickableViewAccessibility") View v, MotionEvent event) {
+                message.setHint("");
+                return false;
+            }
+        });
+
+        message.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    message.setHint("Ping something!");
+                }
+            }
+        });
+
         String text = message.getText().toString();
 
 
@@ -127,8 +151,10 @@ public class PingCreationActivity extends AppCompatActivity {
                                 }
                             });
                 }
+                finish();
             }
         });
+
     }
 
     /**

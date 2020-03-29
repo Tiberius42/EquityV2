@@ -1,6 +1,5 @@
 # LAHacks: P!ng
 
-By Shwe++
 (Leo Zhuang, Liam Karl, Louise Schul, Samuel Sommerer)
 
 ## P!ng: What's happening?!

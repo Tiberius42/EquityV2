@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -60,20 +62,33 @@ public class PingCreationActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.uploadButton);
 
-//get the spinner from the xml.
+
+        //get the spinner from the xml.
         Spinner dropdown = findViewById(R.id.spinner);
-//create a list of items for the spinner.
+        //create a list of items for the spinner.
         int heart = 0x2764;
         int yikes = 0x1F628;
         int question = 0x2753;
 
 
         String[] items = new String[]{"OMG", "HAHA", new String(Character.toChars(heart)), new String(Character.toChars(yikes)), new String(Character.toChars(question))};
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
-//There are multiple variations of this, but this is the basic variant.
+        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
+        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//set the spinners adapter to the previously created one.
+        //set the spinners adapter to the previously created one.
         dropdown.setAdapter(adapter);
+
+        // ChipGroup
+        /*
+        ChipGroup options = findViewById(R.id.tags);
+        for (String i : items) {
+            Chip chip = new Chip(options.getContext());
+            chip.setText(i);
+            options.addView(chip);
+        }
+         */
+
+
 
 
         message = findViewById(R.id.messageBox);

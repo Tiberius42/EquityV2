@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         mMap.setMapStyle(mapStyleOptions);
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(true);
+        mMap.setPadding(0, 0, 0, 200);
 
 
         // Use a custom info window adapter to handle multiple lines of text in the
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                                 double trans = Math.min(Math.max((hits+1)/20,.3),1);
                                 //mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));
                                 if (markers.containsKey(document.get("tag"))) {
-                                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(markers.get(document.get("tag"))))
+                                    Marker mark = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(markers.get(document.get("tag"))))
                                             .position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));
                                 } else {
                                     mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));

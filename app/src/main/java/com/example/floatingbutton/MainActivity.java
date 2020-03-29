@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +44,12 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +58,7 @@ import java.util.List;
  * An activity that displays a map showing the place at the device's current location.
  */
 public class MainActivity extends AppCompatActivity
-        implements OnMapReadyCallback {
+        implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int DEFAULT_ZOOM = 15;
@@ -152,6 +159,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //adds markers
+
     }
 
     /**
@@ -241,7 +250,43 @@ public class MainActivity extends AppCompatActivity
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        //DO PIN STUFF
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //String message = "";
+        DocumentReference docRef = db.collection("pings").document("SMQLafO3pltEzGFwZ0vc");
+        //map.addMarker(new MarkerOptions().position(new LatLng(34.00849, -118.498)).title("heyhey"));
+
+        db.collection("pings")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                GeoPoint geoPoint = document.getGeoPoint("location");
+                                double lat = geoPoint.getLatitude();
+                                double lng = geoPoint.getLongitude ();
+                                LatLng latLng = new LatLng(lat, lng);
+                                mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        marker.setTitle("Liked!");
+    }
+
 
     /**
      * Gets the current location of the device, and positions the map's camera.

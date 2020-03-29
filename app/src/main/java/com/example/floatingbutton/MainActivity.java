@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity
                     Intent startIntent = new Intent(getApplicationContext(), PingCreationActivity.class);
                     startActivity(startIntent);
                 }
+
             }
         });
 
@@ -175,6 +176,8 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < tags.length; i++) {
             markers.put(tags[i], svgToBitmap(markersSvg[i]));
         }
+
+
     }
 
     /**
@@ -332,6 +335,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //refresh page when we press the button
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+
+    }
+
     /**
      * Gets the current location of the device, and positions the map's camera.
      */
@@ -436,6 +452,15 @@ public class MainActivity extends AppCompatActivity
         d.setBounds(0, 0, c.getWidth(), c.getHeight());
         d.draw(c);
         return bmp;
+    }
+
+    public void refresh() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.floatingbutton;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -142,6 +143,7 @@ public class PingCreationActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -151,11 +153,16 @@ public class PingCreationActivity extends AppCompatActivity {
                                 }
                             });
                 }
-                finish();
+                //refresh page when we press the button
             }
+
+
         });
 
     }
+
+
+
 
     /**
      * Gets the current location of the device, and positions the map's camera.

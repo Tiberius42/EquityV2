@@ -78,6 +78,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="16sp"
                 app:srcCompat="@android:drawable/ic_dialog_map" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
 

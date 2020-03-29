@@ -3,7 +3,7 @@
 By Shwe++
 (Leo Zhuang, Liam Karl, Louise Schul, Samuel Sommerer)
 
-## P!ng: What's happe-ping?!
+## P!ng: What's happening?!
 
 Whether you’re in Santa Monica pier or Downtown LA, there is always something happening around the corner. With P!ng, you can see what other people are experiencing all around you! P!ng is an Android app that utilizes Google Maps and Firebase to share what people are reacting to. 
 
@@ -33,7 +33,9 @@ It might feel lonesome being home yet another day due to the threat of COVID-19.
 
 P!ng is an Android app written in Java with Android Studio. It makes use of Google Maps API and Firebase.
 
-Google Maps: As a location-oriented social media app, Google Maps provides the foundation of Ping’s functionality. We are able to access the geographic coordinates of users with Google’s location services, from which the users can then ping specific positions on a global map based on their current location. Our pings update on the map immediately as you send them, so users can traverse an entire feed of others’ pings just by viewing different areas on the map. The functionality offered by Google Maps ensures that our users can both post pings, as well as view pings by others with particular locations in mind. The content of our platform is thus well-suited to supporting a variety of location-based services.
+### Google Maps
+
+As a location-oriented social media app, Google Maps provides the foundation of Ping’s functionality. We are able to access the geographic coordinates of users with Google’s location services, from which the users can then ping specific positions on a global map based on their current location. Our pings update on the map immediately as you send them, so users can traverse an entire feed of others’ pings just by viewing different areas on the map. The functionality offered by Google Maps ensures that our users can both post pings, as well as view pings by others with particular locations in mind. The content of our platform is thus well-suited to supporting a variety of location-based services.
 
 ### Map Markers
 

@@ -46,4 +46,34 @@
         tools:layout_editor_absoluteX="339dp"
         tools:layout_editor_absoluteY="611dp" />
 
+<!--
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="223dp"
+        tools:layout_editor_absoluteY="452dp"
+        app:singleLine="true"
+        app:chipSpacing="10dp">
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Default" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choice" />
+
+    </com.google.android.material.chip.ChipGroup>
+    -->
+
+    <!--
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.google.android.material.chip.ChipGroup>
+    -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

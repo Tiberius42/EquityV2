@@ -1,5 +1,6 @@
 package com.example.floatingbutton;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,6 +10,8 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -35,10 +38,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -49,15 +57,17 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
 public class MainActivity extends AppCompatActivity
-        implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+        implements OnMapReadyCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int DEFAULT_ZOOM = 15;
@@ -65,6 +75,8 @@ public class MainActivity extends AppCompatActivity
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
+    // Used for selecting the current place.
+    private static final int M_MAX_ENTRIES = 5;
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
@@ -81,6 +93,14 @@ public class MainActivity extends AppCompatActivity
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
+    private String[] mLikelyPlaceNames;
+    private String[] mLikelyPlaceIDs;
+    private String[] mLikelyPlaceAddresses;
+    private List[] mLikelyPlaceAttributions;
+    private LatLng[] mLikelyPlaceLatLngs;
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     private HashMap<String, Bitmap> markers;
 
@@ -231,7 +251,6 @@ public class MainActivity extends AppCompatActivity
 
         //DO PIN STUFF
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         //String message = "";
         final DocumentReference docRef = db.collection("pings").document("SMQLafO3pltEzGFwZ0vc");
         //map.addMarker(new MarkerOptions().position(new LatLng(34.00849, -118.498)).title("heyhey"));
@@ -241,18 +260,24 @@ public class MainActivity extends AppCompatActivity
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        HashMap<String, String> markerMap = new HashMap<String, String>();
                         if (task.isSuccessful()) {
+                            int count = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
+
                                 GeoPoint geoPoint = document.getGeoPoint("location");
                                 double lat = geoPoint.getLatitude();
-                                double lng = geoPoint.getLongitude ();
+                                double lng = geoPoint.getLongitude();
                                 LatLng latLng = new LatLng(lat, lng);
+                                double hits = document.getDouble("hits");
+                                double trans = Math.min(Math.max((hits+1)/20,.3),1);
+                                //mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));
                                 if (markers.containsKey(document.get("tag"))) {
                                     mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(markers.get(document.get("tag"))))
-                                            .position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                                            .position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));
                                 } else {
-                                    mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!"));
+                                    mMap.addMarker(new MarkerOptions().position(latLng).title((String) document.getData().get("message")).snippet("Tap to Like!").alpha((float)trans));
                                 }
                             }
                         } else {
@@ -260,11 +285,60 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
-    }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        marker.setTitle("Liked!");
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                marker.setSnippet("Liked!");
+
+                //find me pings where titles match, in otherwords, find the corresponding object to marker
+                db.collection("pings")
+                        .whereEqualTo("message", marker.getTitle())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        String id = document.getId();
+                                        double likes = document.getDouble("hits");
+                                        //now we write the new value.
+                                        DocumentReference pingRef = db.collection("pings").document(id);
+
+                                        // Set the "isCapital" field of the city 'DC'
+                                        pingRef
+                                                .update("hits", likes+1)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
+
+
+
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+
+                marker.hideInfoWindow();
+                marker.showInfoWindow();
+            }
+        });
+
+
     }
 
     /**

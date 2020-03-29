@@ -3,7 +3,7 @@
 By Shwe++
 (Leo Zhuang, Liam Karl, Louise Schul, Samuel Sommerer)
 
-## P!ng: What's happ-e-p!ng?!
+## P!ng: What's happ-e-ping?!
 
 Whether you’re in Santa Monica pier or Downtown LA, there is always something happening around the corner. With P!ng, you can see what other people are experiencing all around you! P!ng is an Android app that utilizes Google Maps and Firebase to share what people are reacting to. 
 
